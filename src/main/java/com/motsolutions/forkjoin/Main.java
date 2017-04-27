@@ -12,7 +12,7 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
-    private static final int DATA_SIZE = 1500;
+    private static final int DATA_SIZE = 150000000;
     private static final int MAX_RANGE = 100;
 
     public static void main(String args[]) {
@@ -46,12 +46,12 @@ public class Main {
         // algorithm goes here
         long result = 0;
         for (int i = lo; i < hi; i++) {
-            if (i == lo) {
-                result += (data[i] + data[i+1])/3;
-            } else if (i == hi-1) {
-                result += (data[i] + data[i-1])/3;
+            if (i == 0) {
+                result += (data[i] + data[i + 1]) / 3;
+            } else if (i == DATA_SIZE - 1) {
+                result += (data[i] + data[i - 1]) / 3;
             } else {
-                result += (data[i-1] + data[i] + data[i+1])/3;
+                result += (data[i - 1] + data[i] + data[i + 1]) / 3;
             }
         }
         return result;

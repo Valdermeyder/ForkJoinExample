@@ -31,17 +31,16 @@ public class Sum extends RecursiveTask<Long> {
 	
 	private boolean isSmallestPossibleSize() {
 		// FILL IN!
-		return forks < 2;
+		return forks > 10;
 	}
 
 	private Long computeSequentially() {
 		// FILL IN
-		return Main.sequentialAlgorithm(data, 0, hi);
+		return Main.sequentialAlgorithm(data, lo, hi);
 	}
 
 	private Long forkAndJoin() {
 		// FILL IN
-		long result = 0;
 		int cutPoint = findCutPoint();
 		Sum left = createLeft(cutPoint);
 		Sum right = createRight(cutPoint);
@@ -57,10 +56,10 @@ public class Sum extends RecursiveTask<Long> {
 	}
 
 	private Sum createRight(int cutPoint) {
-		return new Sum(data, cutPoint + 1, hi, forks +1);
+		return new Sum(data, cutPoint, hi, forks +1);
 	}
 
 	private int findCutPoint() {
-		return hi/2;
+		return lo + (hi-lo)/2;
 	}
 }
