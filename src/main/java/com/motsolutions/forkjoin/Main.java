@@ -12,8 +12,9 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
-    private static final int DATA_SIZE = 150000000;
+    private static int DATA_SIZE = 150000000;
     private static final int MAX_RANGE = 100;
+    public static int forks = 0;
 
     public static void main(String args[]) {
         int[] data = createDataset(DATA_SIZE);
@@ -31,6 +32,29 @@ public class Main {
 
         System.out.println("Time sequential = " + sequentialTime + " ms");
         System.out.println("Time parallel = " + parallelTime + " ms");
+        System.out.println("Size,Sequential,Parallel");
+        for (int i = 15000; i <= 150000000; i *= 10) {
+            DATA_SIZE = i;
+            measure = Stopwatch.createStarted();
+            sequentialAlgorithm(data, 0, DATA_SIZE);
+            sequentialTime = measure.elapsed(TimeUnit.MILLISECONDS);
+            measure = Stopwatch.createStarted();
+            ForkJoinPool.commonPool().invoke(new Sum(data, 0, DATA_SIZE, 0));
+            parallelTime = measure.elapsed(TimeUnit.MILLISECONDS);
+            System.out.println("" + DATA_SIZE + ',' + sequentialTime + ',' + parallelTime);
+        }
+        DATA_SIZE = 150000000;
+        System.out.println("Forks,Sequential,Parallel");
+        for (int i = 0; i <= 40; i++) {
+            forks = i;
+            measure = Stopwatch.createStarted();
+            sequentialAlgorithm(data, 0, DATA_SIZE);
+            sequentialTime = measure.elapsed(TimeUnit.MILLISECONDS);
+            measure = Stopwatch.createStarted();
+            ForkJoinPool.commonPool().invoke(new Sum(data, 0, DATA_SIZE, 0));
+            parallelTime = measure.elapsed(TimeUnit.MILLISECONDS);
+            System.out.println("" + forks + ',' + sequentialTime + ',' + parallelTime);
+        }
     }
 
     public static int[] createDataset(int size) {

@@ -31,7 +31,7 @@ public class Sum extends RecursiveTask<Long> {
 	
 	private boolean isSmallestPossibleSize() {
 		// FILL IN!
-		return forks > 10;
+		return forks > Main.forks;
 	}
 
 	private Long computeSequentially() {
